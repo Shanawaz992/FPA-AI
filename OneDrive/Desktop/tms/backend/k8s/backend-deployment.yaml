@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tms-backend
+  labels:
+    app: tms-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tms-backend
+  template:
+    metadata:
+      labels:
+        app: tms-backend
+    spec:
+      containers:
+        - name: backend
+          image: <your-dockerhub-username>/tms-backend:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql:3306/traveldb
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: root
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"

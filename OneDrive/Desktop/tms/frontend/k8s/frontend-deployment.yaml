@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tms-frontend
+  labels:
+    app: tms-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tms-frontend
+  template:
+    metadata:
+      labels:
+        app: tms-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: <your-dockerhub-username>/tms-frontend:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: REACT_APP_BACKEND_URL
+              value: http://tms-backend:8081
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
